@@ -16,6 +16,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product create(Product product) {
+		if(product.getName()==null||product.getDescription()==null||product.getPrice()==null)
+			product = null;
 		return this.repository.save(product);
 	}
 	
