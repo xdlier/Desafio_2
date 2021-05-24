@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import Compasso.Teste.Gabrie.CatalogoMongo.Model.Product;
 import Compasso.Teste.Gabrie.CatalogoMongo.Service.ProductServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api(value = "API REST Catalogo de Produtos")
 @RestController
 @RequestMapping("/products")
 public class ProductsController {
@@ -24,26 +27,31 @@ public class ProductsController {
 	@Autowired
 	private ProductServiceImpl productService;
 
-	@PostMapping
+	@ApiOperation(value = "Cadastra um produto")
+	@PostMapping(produces = "application/json")
 	public Product create(@RequestBody Product product) {
 		return productService.create(product);
 	}
 
+	@ApiOperation(value = "Atualizar um produto")
 	@PutMapping("/{id}")
 	public Product edit(@PathVariable(name = "id") String id, @RequestBody Product product) {
 		return productService.edit(id, product);
 	}
 
+	@ApiOperation(value = "Retorna um produto")
 	@GetMapping("/{id}")
 	public Product findById(@PathVariable(name = "id") String id) {
 		return productService.findById(id);
 	}
 
+	@ApiOperation(value = "Retorna uma lista de produtos")
 	@GetMapping
 	public List<Product> findAll() {
 		return productService.findAll();
 	}
 
+	@ApiOperation(value = "Retorna uma lista de produtos filtrados")
 	@GetMapping("/search")
 	public List<Product> search(@RequestParam(name = "min_price", required = false, defaultValue = "0.0") double min_price,
 			@RequestParam(name = "max_price", required = false, defaultValue = "1000000.0") double max_price,
@@ -51,6 +59,7 @@ public class ProductsController {
 		return productService.search(min_price, max_price, q);
 	}
 
+	@ApiOperation(value = "Deletar um produto")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Product> deleteById(@PathVariable(name = "id") String id) {
 		return productService.deleteById(id);
